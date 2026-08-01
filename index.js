@@ -18,8 +18,10 @@ if (!TOKEN) {
 
 const API = `https://api.telegram.org/bot${TOKEN}`;
 
+// ROTA PRINCIPAL — responde exatamente o que o sistema espera
 app.get("/", (req, res) => {
-    res.json({
+    res.status(200).json({
+        message: "SN register Successfully!",
         status: "online",
         bot: "@Mg_mega_bot"
     });
@@ -50,7 +52,6 @@ app.get("/updates", async (req, res) => {
 });
 
 app.post("/send", async (req, res) => {
-
     const { chat_id, text } = req.body;
 
     if (!chat_id || !text) {
@@ -61,31 +62,24 @@ app.post("/send", async (req, res) => {
     }
 
     try {
-
         const resposta = await axios.post(`${API}/sendMessage`, {
             chat_id,
             text
         });
-
-        // Retorna exatamente a resposta do Telegram
         return res.status(200).json(resposta.data);
-
     } catch (erro) {
-
         return res.status(500).json(
             erro.response?.data || {
                 ok: false,
                 description: erro.message
             }
         );
-
     }
-
 });
 
-const PORT = process.env.PORT || 3000;
-
+// Configuração obrigatória para o Render funcionar
+const PORT = process.env.PORT || 10000;
 app.listen(PORT, "0.0.0.0", () => {
     console.log(`API Online`);
-    console.log(`http://localhost:${PORT}`);
+    console.log(`Rodando na porta ${PORT}`);
 });
