@@ -77,7 +77,15 @@ app.post("/send", async (req, res) => {
     }
 });
 
-// Configuração obrigatória para o Render funcionar
+// Resposta para qualquer caminho que não existir
+app.use((req, res) => {
+    res.status(404).json({
+        ok: false,
+        message: "Not Found!"
+    });
+});
+
+// Configuração para o Render
 const PORT = process.env.PORT || 10000;
 app.listen(PORT, "0.0.0.0", () => {
     console.log(`API Online`);
